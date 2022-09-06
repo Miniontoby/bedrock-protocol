@@ -4,9 +4,7 @@ const { Viewer, MapControls } = require('prismarine-viewer/viewer')
 const { ClientProvider } = require('./ClientProvider')
 // const { ProxyProvider } = require('./ProxyProvider')
 global.THREE = require('three')
-const { version } = require('./config.json')
-
-const MCVER = version
+const { version: MCVER } = require('./config.json')
 
 class BotViewer {
   start () {

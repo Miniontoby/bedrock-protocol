@@ -30,7 +30,7 @@ class BotProvider extends WorldView {
 
   handleChunk (packet, render = true) {
     const hash = (packet.x << 4) + ',' + (packet.z << 4)
-    if (this.loadChunk[hash]) return    
+    if (this.loadChunk[hash]) return
     const cc = new ChunkColumn(Version.v1_4_0, packet.x, packet.z)
     cc.networkDecodeNoCache(packet.payload, packet.sub_chunk_count).then(() => {
       this.loadedChunks[hash] = true

@@ -21,7 +21,7 @@ class ClientProvider extends BotProvider {
 
     client.on('connect_allowed', () => {
       client.connect()
-    
+
       client.once('resource_packs_info', (packet) => {
         client.write('resource_pack_client_response', {
           response_status: 'completed',
