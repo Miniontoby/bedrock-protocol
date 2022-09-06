@@ -30,12 +30,13 @@ class BotProvider extends WorldView {
 
   handleChunk (packet, render = true) {
     const hash = (packet.x << 4) + ',' + (packet.z << 4)
-    if (this.loadChunk[hash]) return
+    if (this.loadChunk[hash]) return    
     const cc = new ChunkColumn(Version.v1_4_0, packet.x, packet.z)
     cc.networkDecodeNoCache(packet.payload, packet.sub_chunk_count).then(() => {
       this.loadedChunks[hash] = true
       this.world.setColumn(packet.x, packet.z, cc)
-      const chunk = cc.serialize()
+      const chunk = new ChunkColumn(Version.v1_4_0, packet.x, packet.z)
+      // const chunk = cc.serialize()
       // console.log('Chunk', chunk)
       if (render) this.emitter.emit('loadChunk', { x: packet.x << 4, z: packet.z << 4, chunk })
     })

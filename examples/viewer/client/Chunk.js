@@ -1,6 +1,8 @@
-const { ChunkColumn } = require('bedrock-provider')
-
-const Block = require('prismarine-block')('1.16.1')
+const { version: apiversion } = require('./config.json')
+const registry = require('prismarine-registry')('bedrock_' + apiversion)
+const ChunkColumn = require('prismarine-chunk')(registry)
+const Block = require('prismarine-block')(registry)
+// try { const v8 = require('v8') } catch { }
 
 class ChunkColumnWrapped extends ChunkColumn { // pchunk compatiblity wrapper
   // Block access
@@ -11,6 +13,42 @@ class ChunkColumnWrapped extends ChunkColumn { // pchunk compatiblity wrapper
   getBlockStateId (pos) {
     return super.getBlock(pos.x, pos.y, pos.z)?.stateId
   }
+
+  // Serialization
+  // serialize() {
+  //   if (typeof v8 === 'undefined') {
+  //     return JSON.stringify(this)
+  //   } else {
+  //     const copy = { ...this, sections: [] }
+  //     for (const section of this.sections) {
+  //       copy.sections.push(v8.serialize(section))
+  //     }
+  //     return v8.serialize(copy)
+  //   }
+  // }
+
+  // toJson() { return this.serialize() }
+
+  /*
+  static deserialize(obj) {
+    if (typeof obj === 'string') {
+      Oject.assign(this, JSON.parse(obj))
+    } else { // Buffer
+      const chunk = new ChunkColumnWrapped()
+      const des = v8.deserialize(obj)
+      Object.assign(chunk, des)
+      chunk.sections = []
+      for (const section of des.sections) {
+        const s = new SubChunk()
+        chunk.sections.push(Object.assign(s, v8.deserialize(section)))
+      }
+      // console.log('Des',obj,chunk)
+      return chunk
+    }
+  }
+  */
+
+  // static fromJson(obj) { return ChunkColumnWrapped.deserialize(obj) }
 }
 
 module.exports = (version) => {

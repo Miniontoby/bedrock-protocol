@@ -100,7 +100,7 @@ class MovementManager {
       downJump: false
     }
 
-    const mcData = require('minecraft-data')('1.16.1')
+    const mcData = require('minecraft-data')(this.player.version)
     this.physics = Physics(mcData, this.world)
     this.controls = {
       forward: false,
