@@ -2,7 +2,7 @@ import EventEmitter from "events"
 import { Realm } from "prismarine-realms"
 
 declare module "bedrock-protocol" {
-  type Version = '1.19.11' | '1.19.10' | '1.19.2' | '1.19.1' | '1.18.31' | '1.18.30' | '1.18.12' | '1.18.11' | '1.18.10' | '1.18.2' | '1.18.1' | '1.18.0' | '1.17.41' | '1.17.40' | '1.17.34' | '1.17.30' | '1.17.11' | '1.17.10' | '1.17.0' | '1.16.220' | '1.16.210' | '1.16.201'
+  type Version = '1.19.22' | '1.19.21' | '1.19.20' | '1.19.11' | '1.19.10' | '1.19.2' | '1.19.1' | '1.18.31' | '1.18.30' | '1.18.12' | '1.18.11' | '1.18.10' | '1.18.2' | '1.18.1' | '1.18.0' | '1.17.41' | '1.17.40' | '1.17.34' | '1.17.30' | '1.17.11' | '1.17.10' | '1.17.0' | '1.16.220' | '1.16.210' | '1.16.201'
 
   enum title { MinecraftNintendoSwitch, MinecraftJava }
 
@@ -131,6 +131,10 @@ declare module "bedrock-protocol" {
      * Close the connection. Already called by disconnect. Call this to manually close RakNet connection. 
      */
     close()
+
+    on(event: 'login', cb: () => void)
+    on(event: 'join', cb: () => void)
+    on(event: 'close', cb: (reason: string) => void)
   }
 
   export class Server extends EventEmitter {
@@ -161,6 +165,14 @@ declare module "bedrock-protocol" {
     }
     // Whether to enable chunk caching (default: false)
     enableChunkCaching?: boolean
+
+    // Only allow one client to connect at a time (default: false)
+    forceSinge: boolean
+
+    // Dispatched when a new client has logged in, and we need authentication
+    // tokens to join the backend server. Cached after the first login.
+    // If this is not specified, the client will be disconnected with a login prompt.
+    onMsaCode(data, client)
   }
 
   export class Relay extends Server {
